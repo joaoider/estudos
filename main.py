@@ -8,7 +8,7 @@ from eda import (
     analise_visual,
     pre_processamento
 )
-
+"""
 # Importações Modelos
 from modelos.modelo_regressao_linear import rodar_regressao_linear
 from modelos.modelo_random_forest import rodar_random_forest
@@ -92,3 +92,4 @@ elif secao == "Modelos":
 
     elif modelo_escolhido == "HistGradientBoosting":
         rodar_hist_gradient_boosting(X_train, X_test, y_train, y_test, features, st)
+"""
