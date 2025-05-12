@@ -2,6 +2,8 @@
 import streamlit as st
 from sklearn.datasets import fetch_california_housing
 
+resultados = []
+
 # Importações EDA
 from eda import (
     analise_inicial,
@@ -24,26 +26,12 @@ from modelos.modelo_hist_gradient_boosting import rodar_hist_gradient_boosting
 # Título da aplicação
 st.title("🏡 Análise de Regressão - Housing California")
 
-# Sidebar principal
-secao = st.sidebar.selectbox("🔎 Escolha a Seção:", ["EDA", "Modelos"])
+with st.sidebar.expander("📊 EDA"):
+    mostrar_eda = st.checkbox("Exibir análise EDA")
 
-# Carregar base
-data = fetch_california_housing(as_frame=True)
-df = data.frame
-
-# EDA
-if secao == "EDA":
-    st.subheader("📊 Análise Exploratória de Dados (EDA)")
-    st.write("## Dados carregados")
-    st.dataframe(df.head())
-
-    analise_inicial(df, st)
-    analise_visual(df, st)
-
-# Modelos
-elif secao == "Modelos":
-    modelo_escolhido = st.sidebar.radio(
-        "📌 Escolha o Modelo:",
+with st.sidebar.expander("🤖 Modelos"):
+    modelo_escolhido = st.radio(
+        "Escolha o Modelo:",
         [
             "Regressão Linear",
             "Random Forest",
@@ -55,40 +43,57 @@ elif secao == "Modelos":
             "Regressões com Regularização (Ridge, Lasso, ElasticNet)",
             "KNN",
             "HistGradientBoosting"
-        ]
+        ],
+        key="modelos_radio"
     )
 
-    # Pré-processamento (roda apenas uma vez)
-    X_train, X_test, y_train, y_test, df_tratado = pre_processamento(df, st)
-    features = df_tratado.drop(columns=['MedHouseVal'])
+with st.sidebar.expander("🏆 Melhor Modelo"):
+    mostrar_melhor = st.checkbox("Comparar todos os modelos")
 
-    # Roteamento de modelo
+
+# Carregar base
+data = fetch_california_housing(as_frame=True)
+df = data.frame
+
+# EDA
+if mostrar_eda:
+    st.subheader("📊 Análise Exploratória de Dados (EDA)")
+    st.write("## Dados carregados")
+    st.dataframe(df.head())
+
+    analise_inicial(df, st)
+    analise_visual(df, st)
+
+# Pré-processamento (único)
+X_train, X_test, y_train, y_test, df_tratado = pre_processamento(df, st)
+features = df_tratado.drop(columns=['MedHouseVal'])
+
+# Modelos
+if modelo_escolhido:
+    st.subheader(f"🤖 Resultado: {modelo_escolhido}")
+
     if modelo_escolhido == "Regressão Linear":
-        rodar_regressao_linear(X_train, X_test, y_train, y_test, features, st)
-
+        resultado = rodar_regressao_linear(X_train, X_test, y_train, y_test, features, st)
     elif modelo_escolhido == "Random Forest":
-        rodar_random_forest(X_train, X_test, y_train, y_test, features, st)
+        resultado = rodar_random_forest(X_train, X_test, y_train, y_test, features, st)
+    # ... continue com os outros modelos ...
 
-    elif modelo_escolhido == "Gradient Boosting":
-        rodar_gradient_boosting(X_train, X_test, y_train, y_test, features, st)
+    resultados.append(resultado)
 
-    elif modelo_escolhido == "XGBoost":
-        rodar_xgboost(X_train, X_test, y_train, y_test, features, st)
+# Comparativo
+if mostrar_melhor:
+    if not resultados:
+        st.warning("⚠️ Execute ao menos um modelo para comparar.")
+    else:
+        df_resultados = pd.DataFrame(resultados)
+        st.subheader("📊 Comparativo de Modelos")
+        st.dataframe(df_resultados)
 
-    elif modelo_escolhido == "LightGBM":
-        rodar_lightgbm(X_train, X_test, y_train, y_test, features, st)
-
-    elif modelo_escolhido == "CatBoost":
-        rodar_catboost(X_train, X_test, y_train, y_test, features, st)
-
-    elif modelo_escolhido == "SVR":
-        rodar_svr(X_train, X_test, y_train, y_test, features, st)
-
-    elif modelo_escolhido == "Regressões com Regularização (Ridge, Lasso, ElasticNet)":
-        rodar_regressoes_lineares(X_train, X_test, y_train, y_test, features, st)
-
-    elif modelo_escolhido == "KNN":
-        rodar_knn(X_train, X_test, y_train, y_test, features, st)
-
-    elif modelo_escolhido == "HistGradientBoosting":
-        rodar_hist_gradient_boosting(X_train, X_test, y_train, y_test, features, st)
+        melhor = df_resultados.loc[df_resultados["RMSE"].idxmin()]
+        st.markdown(f"""
+        ### 🥇 Melhor Modelo: `{melhor['Modelo']}`
+        - **MAE:** {melhor['MAE']:.3f}  
+        - **RMSE:** {melhor['RMSE']:.3f}  
+        - **R²:** {melhor['R²']:.3f}  
+        - **Parâmetros:** `{melhor['Parâmetros']}`
+        """)

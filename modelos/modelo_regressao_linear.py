@@ -70,3 +70,11 @@ def rodar_regressao_linear(X_train, X_test, y_train, y_test, X, st):
     X_sm = sm.add_constant(X_train)
     model_sm = sm.OLS(y_train, X_sm).fit()
     st.text(model_sm.summary())
+
+    return {
+    "Modelo": "Regressão Linear",
+    "MAE": mae,
+    "RMSE": rmse,
+    "R²": r2,
+    "Parâmetros": "default"
+}

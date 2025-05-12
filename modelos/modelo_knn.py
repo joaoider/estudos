@@ -70,3 +70,11 @@ def rodar_knn(X_train, X_test, y_train, y_test, X, st):
     ax.set_ylabel("Valor Previsto")
     ax.set_title("KNN Regressor Otimizado: Real vs Previsto")
     st.pyplot(fig)
+
+    return {
+    "Modelo": "Regressão Linear",
+    "MAE": mae,
+    "RMSE": rmse,
+    "R²": r2,
+    "Parâmetros": "default"
+}

@@ -73,3 +73,11 @@ def rodar_regressoes_lineares(X_train, X_test, y_train, y_test, X, st):
     y_pred_grid_enet = grid_enet.best_estimator_.predict(X_test_scaled)
     st.write("**Melhor ElasticNet:**", grid_enet.best_params_)
     avaliar("ElasticNet - Otimizado", y_test, y_pred_grid_enet)
+
+    return {
+    "Modelo": "Regressão Linear",
+    "MAE": mae,
+    "RMSE": rmse,
+    "R²": r2,
+    "Parâmetros": "default"
+}

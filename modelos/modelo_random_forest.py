@@ -129,3 +129,11 @@ def rodar_random_forest(X_train, X_test, y_train, y_test, X, st):
     axes[1].set_ylabel("Valor Previsto")
 
     st.pyplot(fig)
+
+    return {
+    "Modelo": "Regressão Linear",
+    "MAE": mae,
+    "RMSE": rmse,
+    "R²": r2,
+    "Parâmetros": "default"
+}
