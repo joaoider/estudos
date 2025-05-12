@@ -67,3 +67,12 @@ plt.xlabel("Valor Real")
 plt.ylabel("Valor Previsto")
 plt.title("XGBoost Otimizado: Real vs Previsto")
 plt.show()
+
+
+# Importância das Variáveis
+import pandas as pd
+
+importancias = pd.Series(best_xgb.feature_importances_, index=X.columns)
+importancias.sort_values().plot(kind='barh', figsize=(10,6))
+plt.title("Importância das Variáveis - XGBoost")
+plt.show()

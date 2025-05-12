@@ -81,3 +81,11 @@ Análise de sentimentos com Transformers
 Anomalia com Autoencoders
 Recomendação com embeddings
 
+
+
+LightGBM
+CatBoost
+SVR
+Regressão Lasso / Ridge / ElasticNet
+KNN 
+HistGradientBoostingRegressor

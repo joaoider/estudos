@@ -7,61 +7,66 @@ import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 
-def analise_inicial(df):
-    print("🔍 Primeiras linhas:")
-    print(df.head())
-    print("\n📋 Info:")
-    print(df.info())
-    print("\n📊 Estatísticas descritivas:")
-    print(df.describe())
-    print(f"\n🧾 Dimensões: {df.shape[0]} linhas × {df.shape[1]} colunas")
-    print("\n❓ Valores nulos:")
-    print(df.isnull().sum())
+def analise_inicial(df, st):
+    st.subheader("🔍 Primeiras Informações")
+    st.write("**Primeiras linhas:**")
+    st.dataframe(df.head())
 
-def analise_visual(df):
-    # Distribuições
-    df.hist(bins=30, figsize=(15, 10))
-    plt.suptitle('Distribuições das Variáveis', fontsize=16)
+    st.write("**Info:**")
+    buffer = []
+    df.info(buf=buffer.append)
+    st.text('\n'.join(buffer))
+
+    st.write("**Estatísticas descritivas:**")
+    st.dataframe(df.describe())
+
+    st.write(f"**Dimensões:** {df.shape[0]} linhas × {df.shape[1]} colunas")
+    st.write("**Valores nulos:**")
+    st.write(df.isnull().sum())
+
+def analise_visual(df, st):
+    st.subheader("📊 Visualização dos Dados")
+
+    st.write("**Distribuição das variáveis**")
+    fig, ax = plt.subplots(figsize=(15, 10))
+    df.hist(bins=30, ax=ax)
     plt.tight_layout()
-    plt.show()
+    st.pyplot(fig)
 
-    # Correlação
-    plt.figure(figsize=(10, 8))
-    sns.heatmap(df.corr(), annot=True, cmap='coolwarm', fmt='.2f')
-    plt.title('Mapa de Correlação entre Variáveis')
-    plt.show()
+    st.write("**Mapa de Correlação**")
+    fig, ax = plt.subplots(figsize=(10, 8))
+    sns.heatmap(df.corr(), annot=True, cmap='coolwarm', fmt='.2f', ax=ax)
+    st.pyplot(fig)
 
-    # Scatterplots
-    sns.scatterplot(data=df, x='MedInc', y='MedHouseVal')
-    plt.title('Renda Média vs Valor Médio da Casa')
-    plt.show()
+    st.write("**Renda Média vs Valor Médio da Casa**")
+    fig, ax = plt.subplots()
+    sns.scatterplot(data=df, x='MedInc', y='MedHouseVal', ax=ax)
+    st.pyplot(fig)
 
-    sns.scatterplot(data=df, x='AveRooms', y='MedHouseVal')
-    plt.title('Média de Quartos vs Valor das Casas')
-    plt.show()
+    st.write("**Média de Quartos vs Valor das Casas**")
+    fig, ax = plt.subplots()
+    sns.scatterplot(data=df, x='AveRooms', y='MedHouseVal', ax=ax)
+    st.pyplot(fig)
 
-    # Visualização geográfica
-    plt.figure(figsize=(10, 6))
+    st.write("**Visualização geográfica: Latitude × Longitude**")
+    fig, ax = plt.subplots(figsize=(10, 6))
     sns.scatterplot(data=df, x='Longitude', y='Latitude',
-                    hue='MedHouseVal', palette='viridis', alpha=0.7)
-    plt.title('Distribuição Geográfica dos Valores das Casas na Califórnia')
-    plt.legend(title='Valor Médio da Casa')
-    plt.show()
+                    hue='MedHouseVal', palette='viridis', alpha=0.7, ax=ax)
+    st.pyplot(fig)
 
-def pre_processamento(df):
-    # Outliers (boxplots)
-    plt.figure(figsize=(15, 10))
-    for i, col in enumerate(df.columns[:-1]):  # exceto MedHouseVal
-        plt.subplot(3, 3, i + 1)
-        sns.boxplot(x=df[col])
-        plt.title(col)
+def pre_processamento(df, st):
+    st.subheader("⚙️ Pré-processamento dos Dados")
+
+    st.write("**Boxplots para verificação de outliers**")
+    fig, axes = plt.subplots(3, 3, figsize=(15, 10))
+    for i, col in enumerate(df.columns[:-1]):
+        sns.boxplot(x=df[col], ax=axes[i//3][i%3])
+        axes[i//3][i%3].set_title(col)
     plt.tight_layout()
-    plt.show()
+    st.pyplot(fig)
 
-    # Transformações (opcional)
+    # Transformações
     df['MedInc_log'] = np.log1p(df['MedInc'])
-
-    # Engenharia de atributos
     df['RendaPorPessoa'] = df['MedInc'] / df['AveOccup']
 
     # Normalização
@@ -75,4 +80,6 @@ def pre_processamento(df):
     X_train, X_test, y_train, y_test = train_test_split(X, y,
                                                         test_size=0.2,
                                                         random_state=42)
+
+    st.success("Pré-processamento concluído.")
     return X_train, X_test, y_train, y_test, df
