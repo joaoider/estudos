@@ -1,0 +1,30 @@
+O que é o dataset California Housing?
+É um conjunto de dados do censo da Califórnia de 1990, fornecido originalmente pelo projeto Pace Regression. Ele contém informações socioeconômicas e geográficas de diferentes blocos residenciais do estado da Califórnia, com o objetivo de prever o valor médio das casas (medido em centenas de milhares de dólares).
+
+Estrutura dos Dados
+O DataFrame df contém:
+
+✅ Target (variável dependente)
+MedHouseVal: Valor médio das casas em unidades de 100.000 dólares.
+Exemplo: valor 2.5 representa $250.000.
+
+✅ Features (variáveis independentes)
+Coluna	Tipo	Descrição
+MedInc	float	Renda média dos residentes do bairro (em dezenas de milhares de dólares)
+HouseAge	float	Idade média das residências
+AveRooms	float	Média de cômodos por residência
+AveBedrms	float	Média de quartos por residência
+Population	float	População total no bairro
+AveOccup	float	Número médio de pessoas por domicílio
+Latitude	float	Latitude da localização geográfica
+Longitude	float	Longitude da localização geográfica
+
+Qual o objetivo?
+Criar modelos que prevejam o valor médio das casas em uma determinada região com base nas características do bairro.
+
+Possibilidades de análise:
+Correlação entre MedInc e MedHouseVal
+Identificar regiões mais valorizadas via Latitude e Longitude
+Visualizar clusters por HouseAge ou Population
+Criar modelos de regressão linear, árvore de decisão, Random Forest, redes neurais, etc.
+
