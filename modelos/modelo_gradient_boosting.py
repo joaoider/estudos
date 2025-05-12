@@ -78,9 +78,9 @@ def rodar_gradient_boosting(X_train, X_test, y_train, y_test, X, st):
     st.pyplot(fig2)
 
     return {
-    "Modelo": "Regressão Linear",
-    "MAE": mae,
-    "RMSE": rmse,
-    "R²": r2,
-    "Parâmetros": "default"
+    "Modelo": "Gradient Boosting",
+    "MAE": mae_opt,
+    "RMSE": rmse_opt,
+    "R²": r2_opt,
+    "Parâmetros": grid_search.best_params_
 }

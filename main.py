@@ -76,8 +76,22 @@ if modelo_escolhido:
         resultado = rodar_regressao_linear(X_train, X_test, y_train, y_test, features, st)
     elif modelo_escolhido == "Random Forest":
         resultado = rodar_random_forest(X_train, X_test, y_train, y_test, features, st)
-    # ... continue com os outros modelos ...
-
+    elif modelo_escolhido == "Gradient Boosting":
+        resultado = rodar_gradient_boosting(X_train, X_test, y_train, y_test, features, st)    
+    elif modelo_escolhido == "XGBoost":
+        resultado = rodar_xgboost(X_train, X_test, y_train, y_test, features, st)
+    elif modelo_escolhido == "LightGBM":
+        resultado = rodar_lightgbm(X_train, X_test, y_train, y_test, features, st) 
+    elif modelo_escolhido == "CatBoost":
+        resultado = rodar_catboost(X_train, X_test, y_train, y_test, features, st) 
+    elif modelo_escolhido == "SVR":
+        resultado = rodar_svr(X_train, X_test, y_train, y_test, features, st)
+    elif modelo_escolhido == "Regressões com Regularização (Ridge, Lasso, ElasticNet)":
+        resultado = rodar_regressoes_lineares(X_train, X_test, y_train, y_test, features, st)  
+    elif modelo_escolhido == "KNN":
+        resultado = rodar_knn(X_train, X_test, y_train, y_test, features, st) 
+    elif modelo_escolhido == "HistGradientBoosting":
+        resultado = rodar_hist_gradient_boosting(X_train, X_test, y_train, y_test, features, st) 
     resultados.append(resultado)
 
 # Comparativo

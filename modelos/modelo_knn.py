@@ -72,8 +72,8 @@ def rodar_knn(X_train, X_test, y_train, y_test, X, st):
     st.pyplot(fig)
 
     return {
-    "Modelo": "Regressão Linear",
-    "MAE": mae,
+    "Modelo": "Regressão Linear",  # ❌ errado, modelo é "KNN"
+    "MAE": mae,                    # ❌ errado, usa resultado do modelo padrão
     "RMSE": rmse,
     "R²": r2,
     "Parâmetros": "default"

@@ -75,9 +75,9 @@ def rodar_svr(X_train, X_test, y_train, y_test, X, st):
     st.pyplot(fig)
 
     return {
-    "Modelo": "Regressão Linear",
-    "MAE": mae,
-    "RMSE": rmse,
-    "R²": r2,
-    "Parâmetros": "default"
+    "Modelo": "SVR",
+    "MAE": mae_best,
+    "RMSE": rmse_best,
+    "R²": r2_best,
+    "Parâmetros": grid_search_svr.best_params_
 }

@@ -74,10 +74,41 @@ def rodar_regressoes_lineares(X_train, X_test, y_train, y_test, X, st):
     st.write("**Melhor ElasticNet:**", grid_enet.best_params_)
     avaliar("ElasticNet - Otimizado", y_test, y_pred_grid_enet)
 
-    return {
-    "Modelo": "Regressão Linear",
-    "MAE": mae,
-    "RMSE": rmse,
-    "R²": r2,
-    "Parâmetros": "default"
-}
+    mae_ridge = mean_absolute_error(y_test, y_pred_grid_ridge)
+    rmse_ridge = np.sqrt(mean_squared_error(y_test, y_pred_grid_ridge))
+    r2_ridge = r2_score(y_test, y_pred_grid_ridge)
+
+    mae_lasso = mean_absolute_error(y_test, y_pred_grid_lasso)
+    rmse_lasso = np.sqrt(mean_squared_error(y_test, y_pred_grid_lasso))
+    r2_lasso = r2_score(y_test, y_pred_grid_lasso)
+
+    mae_enet = mean_absolute_error(y_test, y_pred_grid_enet)
+    rmse_enet = np.sqrt(mean_squared_error(y_test, y_pred_grid_enet))
+    r2_enet = r2_score(y_test, y_pred_grid_enet)
+
+    melhor_rmse = min(rmse_ridge, rmse_lasso, rmse_enet)
+
+    if melhor_rmse == rmse_ridge:
+        return {
+        "Modelo": "Ridge",
+        "MAE": mae_ridge,
+        "RMSE": rmse_ridge,
+        "R²": r2_ridge,
+        "Parâmetros": grid_ridge.best_params_
+    }
+    elif melhor_rmse == rmse_lasso:
+        return {
+        "Modelo": "Lasso",
+        "MAE": mae_lasso,
+        "RMSE": rmse_lasso,
+        "R²": r2_lasso,
+        "Parâmetros": grid_lasso.best_params_
+    }
+    else:
+        return {
+        "Modelo": "ElasticNet",
+        "MAE": mae_enet,
+        "RMSE": rmse_enet,
+        "R²": r2_enet,
+        "Parâmetros": grid_enet.best_params_
+    }

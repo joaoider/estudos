@@ -130,10 +130,23 @@ def rodar_random_forest(X_train, X_test, y_train, y_test, X, st):
 
     st.pyplot(fig)
 
-    return {
-    "Modelo": "Regressão Linear",
-    "MAE": mae,
-    "RMSE": rmse,
-    "R²": r2,
-    "Parâmetros": "default"
-}
+    # Avaliação final com base no melhor modelo entre os dois
+    rmse_grid = np.sqrt(mean_squared_error(y_test, y_pred_grid))
+    rmse_random = np.sqrt(mean_squared_error(y_test, y_pred_random))
+
+    if rmse_grid <= rmse_random:
+        return {
+            "Modelo": "Random Forest (GridSearch)",
+            "MAE": mean_absolute_error(y_test, y_pred_grid),
+            "RMSE": rmse_grid,
+            "R²": r2_score(y_test, y_pred_grid),
+            "Parâmetros": grid.best_params_
+    }
+    else:
+        return {
+            "Modelo": "Random Forest (RandomSearch)",
+            "MAE": mean_absolute_error(y_test, y_pred_random),
+            "RMSE": rmse_random,
+            "R²": r2_score(y_test, y_pred_random),
+            "Parâmetros": random_search.best_params_
+    }

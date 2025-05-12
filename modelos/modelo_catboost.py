@@ -78,9 +78,9 @@ def rodar_catboost(X_train, X_test, y_train, y_test, X, st):
     st.pyplot(fig2)
 
     return {
-    "Modelo": "Regressão Linear",
-    "MAE": mae,
-    "RMSE": rmse,
-    "R²": r2,
-    "Parâmetros": "default"
+    "Modelo": "CatBoost",
+    "MAE": mae_best,
+    "RMSE": rmse_best,
+    "R²": r2_best,
+    "Parâmetros": grid_search_cat.best_params_
 }
