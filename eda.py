@@ -4,6 +4,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
+import io
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 
@@ -13,9 +14,10 @@ def analise_inicial(df, st):
     st.dataframe(df.head())
 
     st.write("**Info:**")
-    buffer = []
-    df.info(buf=buffer.append)
-    st.text('\n'.join(buffer))
+    buffer = io.StringIO()
+    df.info(buf=buffer)
+    info_str = buffer.getvalue()
+    st.text(info_str)
 
     st.write("**Estatísticas descritivas:**")
     st.dataframe(df.describe())
